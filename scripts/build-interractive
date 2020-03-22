@@ -1,0 +1,15 @@
+#!/bin/bash
+
+[ -z "${RELEASE}" ] && echo "RELEASE is not specified" && exit 1
+[ -z "${HOST_BUILD_DIR}" ] && echo "HOST_BUILD_DIR is not specified" && exit 1
+
+DIR=$(realpath $(dirname $0))
+
+# build the builder
+${DIR}/build-builder
+
+# start container
+docker run --rm -it \
+	--name xilinx-yocto-builder-interractive \
+    -v ${HOST_BUILD_DIR}:/workdir/build \
+    xilinx-yocto-builder:${RELEASE}

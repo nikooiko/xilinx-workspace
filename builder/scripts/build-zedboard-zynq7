@@ -1,0 +1,9 @@
+#!/bin/bash
+
+export YOCTO_TARGET=zedboard-zynq7
+export MACHINE=${YOCTO_TARGET}
+
+DIR=$(realpath $(dirname $0))
+source ${DIR}/generate-configuration
+bitbake core-image-base
+bitbake petalinux-image-minimal

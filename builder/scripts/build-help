@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "Builder's build Commands:"
+echo "- 'build-zedboard-zynq7': building zedboard-zynq7 image"

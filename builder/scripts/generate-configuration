@@ -1,0 +1,45 @@
+#!/bin/bash
+
+# Make sure all arguments are specified
+[ -z "${XILINX_INSTALL_PATH}" ] && echo "XILINX_INSTALL_PATH is not specified" && exit 1
+[ -z "${YOCTO_TARGET}" ] && echo "YOCTO_TARGET is not specified" && exit 1
+[ -z "${YOCTO_BUILD_DIR}" ] && echo "YOCTO_BUILD_DIR is not specified" && exit 1
+[ -z "${DL_DIR}" ] && echo "DL_DIR is not specified" && exit 1
+[ -z "${SSTATE_DIR}" ] && echo "SSTATE_DIR is not specified" && exit 1
+
+# Make sure all needed directories exist
+export BUILDDIR=${YOCTO_BUILD_DIR}/${YOCTO_TARGET}
+install -D -d ${BUILDDIR}
+install -D -d ${DL_DIR}
+install -D -d ${SSTATE_DIR}
+
+echo "Generating Yocto Environment"
+cd ${YOCTO_BUILD_DIR}/${YOCTO_TARGET}
+rm -rf conf # make sure environment is cleared
+source ${XILINX_INSTALL_PATH}/setupsdk ${BUILDDIR}
+echo ""
+
+echo '' >> conf/local.conf
+echo '#####################' >> conf/local.conf
+echo '# Workspace Options #' >> conf/local.conf
+echo '#####################' >> conf/local.conf
+
+echo "Enabling recipes"
+# Retrieved from open embedded meta layers
+echo 'IMAGE_INSTALL_append = " minicom"' >> conf/local.conf
+echo 'IMAGE_INSTALL_append = " socat"' >> conf/local.conf
+echo 'IMAGE_INSTALL_append = " tcpdump"' >> conf/local.conf
+echo 'IMAGE_INSTALL_append = " vim"' >> conf/local.conf
+echo ""
+
+echo "Configuring build paths"
+echo "DL_DIR = \"${DL_DIR}\"" >> conf/local.conf
+echo "SSTATE_DIR = \"${SSTATE_DIR}\"" >> conf/local.conf
+echo ""
+
+echo "Enabling additional features"
+echo "DISTRO_FEATURES_append += \" virtualization\"" >> conf/local.conf
+echo ""
+
+echo "Setup project finished!"
+echo ""

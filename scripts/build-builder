@@ -1,0 +1,10 @@
+#!/bin/bash
+
+[ -z "${RELEASE}" ] && echo "RELEASE is not specified" && exit 1
+DIR=$(realpath $(dirname $0))
+pushd ${DIR}/../
+docker build \
+    -t xilinx-yocto-builder:${RELEASE} \
+    --build-arg XILINX_BRANCH=${RELEASE} \
+    -f builder/Dockerfile .
+popd

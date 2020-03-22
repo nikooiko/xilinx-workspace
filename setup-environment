@@ -1,0 +1,10 @@
+#!/bin/bash
+DIR=$(realpath $(dirname $0))
+
+export RELEASE="rel-v2019.2"
+export HOST_BUILD_DIR=${DIR}/build
+install -d -D ${HOST_BUILD_DIR}
+
+alias build-help=${DIR}/scripts/build-help
+alias build-interractive=${DIR}/scripts/build-interractive
+alias build-builder=${DIR}/scripts/build-builder
